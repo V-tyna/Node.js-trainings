@@ -1,0 +1,29 @@
+.nav-wrapper {
+  background-color: #2688a6;
+  padding: 0 2rem;
+}
+
+.tech {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tech h1 {
+  margin-bottom: 2rem;
+}
+
+.tech img {
+  max-width: 600px;
+  height: auto;
+}
+
+.open-delete {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.open-delete button {
+  margin-left: 10px;
+}

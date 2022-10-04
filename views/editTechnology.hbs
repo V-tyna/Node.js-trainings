@@ -1,0 +1,61 @@
+<h1>Edit {{tech.techName}}</h1>
+
+<form action='/stack/edit' method='POST'>
+	<div class='input-field col s6'>
+		<input
+			placeholder='Technology name'
+			name='techName'
+			id='title'
+			type='text'
+			class='validate'
+      value="{{tech.techName}}"
+			required
+		/>
+		<label for='title'>Technology name</label>
+		<span
+			class='helper-text'
+			data-error='Enter tech name'
+			data-success='right'
+		></span>
+	</div>
+	<div class='input-field col s6'>
+		<input
+			placeholder='Duration of study'
+			name='duration'
+			id='time'
+			type='text'
+			class='validate'
+      value="{{tech.duration}}"
+			required
+		/>
+		<label for='title'>Duration of study</label>
+		<span
+			class='helper-text'
+			data-error='Enter duration'
+			data-success='right'
+		></span>
+	</div>
+	<div class='input-field col s6'>
+		<input
+			placeholder='Image URL'
+			name='image'
+			id='img'
+			type='text'
+			class='validate'
+      value="{{tech.image}}"
+			required
+		/>
+		<label for='title'>Image URL</label>
+		<span
+			class='helper-text'
+			data-error='Enter image URL'
+			data-success='right'
+		></span>
+	</div>
+
+  <input type="hidden" name="id" value="{{tech.id}}">
+
+	<button class='btn waves-effect waves-light' type='submit'>Apply editing
+		<i class='material-icons right'>done</i>
+	</button>
+</form>

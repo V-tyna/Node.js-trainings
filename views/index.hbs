@@ -1,0 +1,25 @@
+<h1>Home page</h1>
+<div class='input-field col s12'>
+	<form method='post' action='/addMessage'>
+	<i class="material-icons prefix">textsms</i>
+		<label for="autocomplete-input">Your message:</label>
+		<input name='message' type='text' />
+		<button class="btn waves-effect waves-light" type="submit">Send
+    <i class="material-icons right">send</i>
+  </button>
+	</form>
+</div>
+<div class="messages">
+{{#if messages.length}}
+{{#each messages}}
+<div class="message-container">
+	<h5>{{message}}</h5>
+	<small>{{date}}</small>
+</div>
+{{/each}}
+{{else}}
+<p>No messages...</p>
+{{/if}}
+</div>
+
+<a class="waves-effect waves-light btn" href='/about'>About page</a>

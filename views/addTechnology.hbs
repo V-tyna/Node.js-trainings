@@ -1,0 +1,22 @@
+<h1>Add technology</h1>
+
+<form action="/add" method="POST">
+  <div class="input-field col s6">
+    <input placeholder="Technology name" name="technologyName"  id="title" type="text" class="validate" required>
+    <label for="title">Technology name</label>
+    <span class="helper-text" data-error="Enter tech name" data-success="right"></span>
+  </div>
+  <div class="input-field col s6">
+    <input placeholder="Duration of study" name="duration" id="time" type="text" class="validate" required>
+     <label for="title">Duration of study</label>
+     <span class="helper-text" data-error="Enter duration" data-success="right"></span>
+  </div>
+  <div class="input-field col s6">
+    <input placeholder="Image URL" name="imageURL" id="img" type="text" class="validate" required>
+    <label for="title">Image URL</label>
+    <span class="helper-text" data-error="Enter image URL" data-success="right"></span>
+  </div>
+  <button class="btn waves-effect waves-light" type="submit">Add technology
+    <i class="material-icons right">add</i>
+  </button>
+</form>
