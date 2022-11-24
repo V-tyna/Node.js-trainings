@@ -3,16 +3,17 @@
 {{#if list.length}}
 {{#each list}}
 <ul class="collection">
-  <li class="collection-item avatar">
+  <li class="collection-item avatar learning-list-card">
     <img src="{{image}}" alt="" class="circle">
     <span class="title">{{techName}}</span>
     <p>Duration: {{duration}}</p>
+    <p>Quantity: {{count}}</p>
     {{!-- <a href="/stack/{{id}}" target="_blank" class="secondary-content">Open</a> --}}
     <div class="open-delete">
-      <form action="/stack/{{id}}" method="GET">
+      <form action="/stack/{{_id}}" method="GET">
             <button class="btn btn-primary" type="submit">Open</button>
       </form>
-      <button class="btn btn-primary delete-tech" data-id="{{id}}" type="submit">Delete</button>
+      <button class="btn btn-primary delete-tech" data-id="{{_id}}" type="submit">Delete</button>
     </div> 
   </li>
 </ul>

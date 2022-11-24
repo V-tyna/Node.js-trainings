@@ -13,10 +13,10 @@
           <p class="duration">{{duration}}</p>
         </div>
         <div class="card-action">
-          <a href="/stack/{{id}}" target="_blank">Open technology</a>
-          <a href="/stack/{{id}}/edit?allow=true" target="_blank">Edit</a>
+          <a href="/stack/{{_id}}">Open technology</a>
+          <a href="/stack/{{_id}}/edit?allow=true">Edit</a>
           <form action="/learningList/add" method="POST">
-            <input type="hidden" name="id" value="{{id}}">
+            <input type="hidden" name="id" value="{{_id}}">
             <button class="btn btn-primary" type="submit">Start to learn</button>
           </form>
         </div>

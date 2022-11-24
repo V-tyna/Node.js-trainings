@@ -17,12 +17,13 @@ addRouter.post('/', async (req, res) => {
 	const stack = new Tech({
 		techName: technologyName,
 		duration: duration,
-		image: imageURL
+		image: imageURL,
+		user_id: req.user
 	});
 
 	try {
 		// await stack.saveAddedTech(); // NO DB
-		await stack.save();
+		await stack.save(); // Mongo DB
 		res.redirect('/stack');
 	} catch(e) {
 		console.log('Add technology failed with error', e);
