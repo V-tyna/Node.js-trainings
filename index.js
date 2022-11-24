@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const mongoose = require('mongoose');
 const expressHandlebars = require('express-handlebars');
 const aboutRouter = require('./routes/about');
 const addRouters = require('./routes/add');
@@ -33,6 +34,18 @@ app.get('/api/users', (req, res) => {
 	res.sendFile(path.join(__dirname, 'assets/users.json'));
 });
 
-app.listen(PORT, () => {
-	console.log(`Server is running on port: ${PORT}`);
-});
+async function start() {
+	try {
+		const MONGO_URL = 'mongodb+srv://V-tyna:zW7AqceTaXfbW3QF@cluster0.ipywaxp.mongodb.net/?retryWrites=true&w=majority';
+		await mongoose.connect(MONGO_URL, {useNewUrlParser: true});
+		
+		app.listen(PORT, () => {
+			console.log(`Server is running on port: ${PORT}`);
+	});
+	} catch(error) {
+		console.log('Server connection error: ', error);
+	}
+	
+}
+
+start();
