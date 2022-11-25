@@ -13,12 +13,15 @@
   "author": "Valentyna Boiko",
   "license": "ISC",
   "dependencies": {
+    "connect-mongodb-session": "^3.1.1",
     "express": "^4.18.1",
     "express-handlebars": "^6.0.6",
+    "express-session": "^1.17.3",
     "mongoose": "^6.7.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/connect-mongodb-session": "^2.4.4",
     "nodemon": "^2.0.19"
   }
 }

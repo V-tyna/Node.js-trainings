@@ -14,12 +14,16 @@
         </div>
         <div class="card-action">
           <a href="/stack/{{_id}}">Open technology</a>
-          <a href="/stack/{{_id}}/edit?allow=true">Edit</a>
-          <form action="/learningList/add" method="POST">
-            <input type="hidden" name="id" value="{{_id}}">
-            <button class="btn btn-primary" type="submit">Start to learn</button>
-          </form>
         </div>
+        {{#if isAuth}}
+          <div class="card-action">
+            <a href="/stack/{{_id}}/edit?allow=true">Edit</a>
+            <form action="/learningList/add" method="POST">
+              <input type="hidden" name="id" value="{{_id}}">
+              <button class="btn btn-primary" type="submit">Start to learn</button>
+            </form>
+          </div>
+        {{/if}}
       </div>
     </div>
   </div>

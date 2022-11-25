@@ -13,7 +13,8 @@ learningRouter.get('/', async (req, res) => {
 
   res.render('learningList', {
 		title: 'Learning page',
-		list: learningList
+		list: learningList,
+    isList: true
 	});
 });
 

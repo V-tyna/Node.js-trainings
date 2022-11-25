@@ -1,0 +1,50 @@
+<div class="row" style="padding-top: 1rem;">
+  <div class="col s12">
+    <ul class="tabs">
+      <li class="tab col s6"><a class="active" href="#login">Sign in</a></li>
+      <li class="tab col s6"><a href="#registration">Sign up</a></li>
+    </ul>
+  </div>
+  <div id="login" class="col s12">
+    <form action="/auth/signin" method="POST" class="col s6"
+    style="display: flex; flex-direction: column;">
+      <div class="input-field col">
+        <input placeholder="Email" name="email"  id="email" type="text" class="validate" required>
+        <label for="email">Your email:</label>
+        <span class="helper-text" data-error="Enter valid email" data-success="right"></span>
+      </div>
+      <div class="input-field col">
+        <input placeholder="Password" name="password" id="password" type="text" class="validate" required>
+        <label for="password">Password: </label>
+        <span class="helper-text" data-error="Enter password" data-success="right"></span>
+      </div>
+      <button class="btn waves-effect waves-light" style="width: 120px; margin: 0 auto;" type="submit">Sign in
+        <i class="material-icons right">enter</i>
+      </button>
+    </form>
+  </div>
+  <div id="registration" class="col s12 offset-s6">
+    <form action="/auth/signin" method="POST" class="col s6"
+    style="display: flex; flex-direction: column;">
+      <div class="input-field col">
+        <input placeholder="Email" name="email"  id="email_up" type="text" class="validate" required>
+        <label for="email">Your email:</label>
+        <span class="helper-text" data-error="Enter valid email" data-success="right"></span>
+      </div>
+      <div class="input-field col">
+        <input placeholder="Password" name="password" id="password_up" type="text" class="validate" required>
+        <label for="password">Password: </label>
+        <span class="helper-text" data-error="Enter password" data-success="right"></span>
+      </div>
+      <div class="input-field col">
+        <input placeholder="Repeat password" name="repeat_password" id="repeat_password" type="text" class="validate" required>
+        <label for="password">Repeat password: </label>
+        <span class="helper-text" data-error="Repeat password" data-success="right"></span>
+      </div>
+      <button class="btn waves-effect waves-light" style="width: 120px; margin: 0 auto;" type="submit">Sign up
+        <i class="material-icons right">enter</i>
+      </button>
+    </form>
+  </div>
+</div>
+        
