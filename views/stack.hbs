@@ -13,17 +13,17 @@
           <p class="duration">{{duration}}</p>
         </div>
         <div class="card-action">
-          <a href="/stack/{{_id}}">Open technology</a>
-        </div>
-        {{#if isAuth}}
-          <div class="card-action">
-            <a href="/stack/{{_id}}/edit?allow=true">Edit</a>
+          <a href="/stack/{{_id}}">Open technology
+          <i class="material-icons tiny" style="position: relative; top: 2px;">zoom_out_map</i></a>
+          {{#if @root.isAuth}}
+            <a href="/stack/{{_id}}/edit?allow=true">Edit
+             <i class="material-icons tiny" style="position: relative; top: 2px;">edit</i></a>
             <form action="/learningList/add" method="POST">
               <input type="hidden" name="id" value="{{_id}}">
-              <button class="btn btn-primary" type="submit">Start to learn</button>
+              <button class="btn btn-primary" type="submit" style="margin-top: 20px;">Start to learn</button>
             </form>
-          </div>
-        {{/if}}
+          {{/if}}
+        </div>
       </div>
     </div>
   </div>
