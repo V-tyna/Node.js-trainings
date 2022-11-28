@@ -1,24 +1,37 @@
 <h1>Learning List</h1>
-<div id="techList">
-{{#if list.length}}
-{{#each list}}
-<ul class="collection">
-  <li class="collection-item avatar learning-list-card">
-    <img src="{{image}}" alt="" class="circle">
-    <span class="title">{{techName}}</span>
-    <p>Duration: {{duration}}</p>
-    <p>Quantity: {{count}}</p>
-    {{!-- <a href="/stack/{{id}}" target="_blank" class="secondary-content">Open</a> --}}
-    <div class="open-delete">
-      <form action="/stack/{{_id}}" method="GET">
-            <button class="btn btn-primary" type="submit">Open</button>
-      </form>
-      <button class="btn btn-primary delete-tech" data-id="{{_id}}" type="submit">Delete</button>
-    </div> 
-  </li>
-</ul>
-{{/each}}
-{{else}}
-<p>No technologies to learn yet...</p>
-{{/if}}
+<div id='techList'>
+	{{#if list.length}}
+		{{#each list}}
+			<ul class='collection'>
+				<li class='collection-item avatar learning-list-card'>
+					<img src='{{image}}' alt='' class='circle' />
+					<span class='title'>{{techName}}</span>
+					<p>Duration: {{duration}}</p>
+					<p>Quantity: {{count}}</p>
+					{{!-- <a href="/stack/{{id}}" target="_blank" class="secondary-content">Open</a> --}}
+					<div class='open-delete'>
+						<form action='/stack/{{_id}}' method='GET'>
+							<input
+								type='hidden'
+								name='_csrf'
+								value='{{@root.csrf}}'
+							/>
+							<button
+								class='btn btn-primary'
+								type='submit'
+							>Open</button>
+						</form>
+            <button
+              class='btn btn-primary delete-tech'
+              data-id='{{_id}}'
+              data-csrf='{{@root.csrf}}'
+              type='submit'
+            >Delete</button>
+					</div>
+				</li>
+			</ul>
+		{{/each}}
+	{{else}}
+		<p>No technologies to learn yet...</p>
+	{{/if}}
 </div>

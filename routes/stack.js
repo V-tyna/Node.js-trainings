@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const authGuard = require('../middlewares/authGuard');
 // const Tech = require('../models/techModel'); // NO DB
 const Tech = require('../models_mongoose/tech');
 const stackRouter = Router();
@@ -13,7 +14,7 @@ stackRouter.get('/', async (req, res) => {
 	});
 });
 
-stackRouter.get('/:id/edit', async (req, res) => {
+stackRouter.get('/:id/edit', authGuard, async (req, res) => {
 	if (!req.query.allow) {
 		return res.redirect('/');
 	}
@@ -25,7 +26,7 @@ stackRouter.get('/:id/edit', async (req, res) => {
 	})
 });
 
-stackRouter.post('/edit', async (req, res) => {
+stackRouter.post('/edit', authGuard, async (req, res) => {
 	// await Tech.update(req.body); // NO DB
 	const { id } = req.body;
 	delete req.body.id;
@@ -33,7 +34,7 @@ stackRouter.post('/edit', async (req, res) => {
 	res.redirect('/stack');
 });
 
-stackRouter.post('/remove', async (req, res) => {
+stackRouter.post('/remove', authGuard, async (req, res) => {
 	try {
 		await Tech.findByIdAndDelete(req.body.tech_id);
 		res.redirect('/stack');

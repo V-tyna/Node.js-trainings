@@ -16,6 +16,7 @@
     <label for="title">Image URL</label>
     <span class="helper-text" data-error="Enter image URL" data-success="right"></span>
   </div>
+  <input type="hidden" name="_csrf" value="{{ @root.csrf }}" />
   <button class="btn waves-effect waves-light" type="submit">Add technology
     <i class="material-icons right">add</i>
   </button>

@@ -4,6 +4,7 @@
 	<i class="material-icons prefix">textsms</i>
 		<label for="autocomplete-input">Your message:</label>
 		<input name='message' type='text' />
+		<input type="hidden" name="_csrf" value="{{ csrf }}">
 		<button class="btn waves-effect waves-light" type="submit">Send
     <i class="material-icons right">send</i>
   </button>

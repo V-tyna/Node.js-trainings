@@ -1,16 +1,17 @@
 const { Router } = require('express');
+const authGuard = require('../middlewares/authGuard');
 //const Tech = require('../models/techModel'); // NO DB
 const Tech = require('../models_mongoose/tech');
 const addRouter = Router();
 
-addRouter.get('/', (req, res) => {
+addRouter.get('/', authGuard, (req, res) => {
   res.render('addTechnology', {
 		title: 'Add page',
-		iaAdd: true
+		isAdd: true
 	});
 })
 
-addRouter.post('/', async (req, res) => {
+addRouter.post('/', authGuard, async (req, res) => {
 	console.log(req.body);
 	const { technologyName, duration, imageURL } = req.body;
 	// const stack = new Tech(technologyName, duration, imageURL); // NO DB

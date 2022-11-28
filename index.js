@@ -1,4 +1,5 @@
 const express = require('express');
+const csurf = require('csurf');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -11,6 +12,7 @@ const homeRouters = require('./routes/home');
 const stackRouters = require('./routes/stack');
 const learningRouter = require('./routes/learningList');
 // const User = require('./models_mongoose/user'); // WITHOUT SESSIONS and AUTH
+const makeUserSchema = require('./middlewares/makeUserSchema');
 const varMiddleware = require('./middlewares/variables');
 
 const PORT = process.env.PORT || 4200;
@@ -52,6 +54,10 @@ app.use(session({
 	saveUninitialized: false,
 	store
 }));
+
+app.use(csurf());
+
+app.use(makeUserSchema);
 app.use(varMiddleware);
 
 app.use('/about', aboutRouter);

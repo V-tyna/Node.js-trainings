@@ -53,9 +53,8 @@
 			data-success='right'
 		></span>
 	</div>
-
 	<input type='hidden' name='id' value='{{tech._id}}' />
-
+	<input type="hidden" name="_csrf" value="{{ @root.csrf }}" />
 	<button class='btn waves-effect waves-light' type='submit'>Apply editing
 		<i class='material-icons right'>done</i>
 	</button>
@@ -63,6 +62,7 @@
 
 <form action='/stack/remove' method='POST'>
 	<input type='hidden' name='tech_id' value='{{tech._id}}' />
+	<input type="hidden" name="_csrf" value="{{ @root.csrf }}" />
 	<button class="btn waves-effect waves-light" style="background-color: #E57373;">Delete tech
 		<i class='material-icons right'>close</i>
 	</button>
