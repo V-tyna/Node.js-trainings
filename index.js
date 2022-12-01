@@ -1,5 +1,6 @@
 const express = require('express');
 const csurf = require('csurf');
+const flash = require('connect-flash');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -9,14 +10,14 @@ const aboutRouter = require('./routes/about');
 const addRouters = require('./routes/add');
 const authRouter = require('./routes/auth');
 const homeRouters = require('./routes/home');
+const keys = require('./configs/index');
 const stackRouters = require('./routes/stack');
 const learningRouter = require('./routes/learningList');
 // const User = require('./models_mongoose/user'); // WITHOUT SESSIONS and AUTH
 const makeUserSchema = require('./middlewares/makeUserSchema');
 const varMiddleware = require('./middlewares/variables');
 
-const PORT = process.env.PORT || 4200;
-const MONGO_URL = 'mongodb+srv://V-tyna:zW7AqceTaXfbW3QF@cluster0.ipywaxp.mongodb.net/?retryWrites=true&w=majority';
+const PORT = process.env.PORT || keys.DEFAULT_PORT;
 
 const app = express();
 
@@ -27,7 +28,7 @@ const handlebars = expressHandlebars.create({
 
 const store = new MongoStore({
 	collection: 'sessions',
-	uri: MONGO_URL
+	uri: keys.MONGO_URL
 });
 
 app.engine('.hbs', handlebars.engine);
@@ -49,13 +50,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
-	secret: 'some secret token',
+	secret: keys.SESSION_SECRET,
 	resave: false,
 	saveUninitialized: false,
 	store
 }));
 
 app.use(csurf());
+app.use(flash());
 
 app.use(makeUserSchema);
 app.use(varMiddleware);
@@ -73,7 +75,7 @@ app.get('/api/users', (req, res) => {
 
 async function start() {
 	try {
-		await mongoose.connect(MONGO_URL, {useNewUrlParser: true});
+		await mongoose.connect(keys.MONGO_URL, {useNewUrlParser: true});
 
 		// const candidate = await User.findOne();
 		// if (!candidate) {

@@ -7,6 +7,8 @@ authRouter.get('/login', async (req, res) => {
 	res.render('auth/login', {
 		title: 'Auth page',
 		isLogin: true,
+		loginError: req.flash('loginError'),
+		signupError: req.flash('signupError')
 	});
 });
 
@@ -32,9 +34,11 @@ authRouter.post('/signin', async (req, res) => {
 					res.redirect('/');
 				});
 			} else {
+				req.flash('loginError', 'Wrong password.');
 				res.redirect('/auth/login#login');
 			}
 		} else {
+			req.flash('loginError', 'User with this email doesn\'t exist.');
 			res.redirect('/auth/login#login');
 		}
 	} catch (e) {
@@ -48,6 +52,7 @@ authRouter.post('/signup', async (req, res) => {
 
 		const candidate = await User.findOne({ email });
 		if (candidate) {
+			req.flash('signupError', 'User with this email already exist.');
 			res.redirect('/auth/login#signup');
 		} else {
 			const hashPassword = await bcrypt.hash(password, 12);
