@@ -53,10 +53,19 @@
 				<i class='material-icons right'>enter</i>
 			</button>
 
-      {{#if loginError}}
-        <p class="alert">{{ loginError }}</p>
-      {{/if}}
+			{{#if loginError}}
+				<p class='alert'>{{loginError}}</p>
+			{{/if}}
 
+			<a
+				href='resetPassword'
+				style='background-color: #2688a6; margin: 20px auto ; width: 220px;'
+				class='btn waves-effect waves-light'
+				style='width: 120px; margin: 0 auto;'
+				type='submit'
+			>Forget password?
+				<i class='material-icons right'>vpn_key</i>
+			</a>
 		</form>
 	</div>
 
@@ -140,10 +149,10 @@
 				<i class='material-icons right'>enter</i>
 			</button>
 
-        {{#if signupError}}
-          <p class="alert">{{ signupError }}</p>
-        {{/if}}
+			{{#if signupError}}
+				<p class='alert'>{{signupError}}</p>
+			{{/if}}
 
-		</form>  
+		</form>
 	</div>
 </div>
