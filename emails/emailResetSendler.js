@@ -1,4 +1,5 @@
-const { BASE_URL, EMAIL_SEND_FROM } = require('../configs/index');
+const { BASE_URL } = require('../configs/index');
+const { EMAIL_SEND_FROM } = require('../configs/secure_keys');
 
 module.exports = function(email, token) {
   return {

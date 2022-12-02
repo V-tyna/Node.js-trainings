@@ -11,6 +11,7 @@ const addRouters = require('./routes/add');
 const authRouter = require('./routes/auth');
 const homeRouters = require('./routes/home');
 const keys = require('./configs/index');
+const { SESSION_SECRET } = require('./configs/secure_keys');
 const stackRouters = require('./routes/stack');
 const learningRouter = require('./routes/learningList');
 // const User = require('./models_mongoose/user'); // WITHOUT SESSIONS and AUTH
@@ -50,7 +51,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
-	secret: keys.SESSION_SECRET,
+	secret: SESSION_SECRET,
 	resave: false,
 	saveUninitialized: false,
 	store

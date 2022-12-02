@@ -3,10 +3,8 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const registrationEmail = require('../emails/emailRegistrationSendler');
 const resetEmail = require('../emails/emailResetSendler');
-const {
-	SG_API_KEY,
-	FIFTEEN_MINUTES_IN_MILLISECONDS,
-} = require('../configs/index');
+const { FIFTEEN_MINUTES_IN_MILLISECONDS } = require('../configs/index');
+const {SG_API_KEY } = require('../configs/secure_keys');
 const sgMail = require('@sendgrid/mail');
 const User = require('../models_mongoose/user');
 
@@ -108,7 +106,14 @@ authRouter.post('/resetPassword', (req, res) => {
 				candidate.resetTokenExp =
 					Date.now() + FIFTEEN_MINUTES_IN_MILLISECONDS;
 				await candidate.save();
-				sgMail.send(resetEmail(candidate.email, token));
+				sgMail.send(resetEmail(candidate.email, token))
+				.then((response) => {
+					console.log(response[0].statusCode)
+					console.log(response[0].headers)
+				})
+				.catch((error) => {
+					console.error(error)
+				})
 				res.redirect('/auth/login#login');
 			} else {
 				req.flash('resetError', 'There is no such email.');
