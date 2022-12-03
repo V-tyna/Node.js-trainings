@@ -16,8 +16,12 @@
           <a href="/stack/{{_id}}">Open technology
           <i class="material-icons tiny" style="position: relative; top: 2px;">zoom_out_map</i></a>
           {{#if @root.isAuth}}
-            <a href="/stack/{{_id}}/edit?allow=true">Edit
-             <i class="material-icons tiny" style="position: relative; top: 2px;">edit</i></a>
+          
+            {{#ifEqual user_id @root.userId}}
+              <a href="/stack/{{_id}}/edit?allow=true">Edit
+                <i class="material-icons tiny" style="position: relative; top: 2px;">edit</i></a>
+            {{/ifEqual}}
+
             <form action="/learningList/add" method="POST">
               <input type="hidden" name="_csrf" value="{{ @root.csrf }}" />
               <input type="hidden" name="id" value="{{_id}}" />

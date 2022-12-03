@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const registrationEmail = require('../emails/emailRegistrationSendler');
 const resetEmail = require('../emails/emailResetSendler');
 const { FIFTEEN_MINUTES_IN_MILLISECONDS } = require('../configs/index');
-const {SG_API_KEY } = require('../configs/secure_keys');
+const { SG_API_KEY } = require('../configs/secure_keys');
 const sgMail = require('@sendgrid/mail');
 const User = require('../models_mongoose/user');
 

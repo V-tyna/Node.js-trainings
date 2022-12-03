@@ -5,14 +5,17 @@ const Tech = require('../models_mongoose/tech');
 const addRouter = Router();
 
 addRouter.get('/', authGuard, (req, res) => {
-  res.render('addTechnology', {
-		title: 'Add page',
-		isAdd: true
-	});
-})
+	try {
+		res.render('addTechnology', {
+			title: 'Add page',
+			isAdd: true
+		});
+	} catch(e) {
+		console.log('Add tech render page error: ', e);
+	}
+});
 
 addRouter.post('/', authGuard, async (req, res) => {
-	console.log(req.body);
 	const { technologyName, duration, imageURL } = req.body;
 	// const stack = new Tech(technologyName, duration, imageURL); // NO DB
 	const stack = new Tech({
