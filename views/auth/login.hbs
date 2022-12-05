@@ -17,7 +17,7 @@
 					placeholder='Email'
 					name='email'
 					id='email'
-					type='text'
+					type='email'
 					class='validate'
 					required
 				/>
@@ -35,12 +35,14 @@
 					id='password'
 					type='password'
 					class='validate'
+					minlength="6"
+					maxlength="56"
 					required
 				/>
 				<label for='password'>Password: </label>
 				<span
 					class='helper-text'
-					data-error='Enter password'
+					data-error='Enter password, password can not be less than 6 symbols or more than 56'
 					data-success='right'
 				></span>
 			</div>
@@ -97,9 +99,9 @@
 					placeholder='Email'
 					name='email'
 					id='email_up'
-					type='text'
+					type='email'
 					class='validate'
-					required
+					{{!-- required --}}
 				/>
 				<label for='email'>Your email:</label>
 				<span
@@ -115,12 +117,14 @@
 					id='password_up'
 					type='password'
 					class='validate'
+					minlength="6"
+					maxlength="56"
 					required
 				/>
 				<label for='password'>Password: </label>
 				<span
 					class='helper-text'
-					data-error='Enter password'
+					data-error='Enter password, password can not be less than 6 symbols or more than 56'
 					data-success='right'
 				></span>
 			</div>
@@ -131,12 +135,14 @@
 					id='repeat_password'
 					type='password'
 					class='validate'
+					minlength="6"
+					maxlength="56"
 					required
 				/>
 				<label for='password'>Repeat password: </label>
 				<span
 					class='helper-text'
-					data-error='Repeat password'
+					data-error='Repeat password, password can not be less than 6 symbols or more than 56'
 					data-success='right'
 				></span>
 			</div>

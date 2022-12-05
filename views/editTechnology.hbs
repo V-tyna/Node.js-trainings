@@ -67,4 +67,7 @@
 	<button class="btn waves-effect waves-light" style="background-color: #E57373;">Delete tech
 		<i class='material-icons right'>close</i>
 	</button>
+	{{#if editTechError}}
+		<p class='alert'>{{editTechError}}</p>
+	{{/if}}
 </form>

@@ -1,7 +1,9 @@
 const { Router } = require('express');
 const authGuard = require('../middlewares/authGuard');
+const { addTechValidators } = require('../helpers/validators');
 //const Tech = require('../models/techModel'); // NO DB
 const Tech = require('../models_mongoose/tech');
+const { validationResult } = require('express-validator');
 const addRouter = Router();
 
 addRouter.get('/', authGuard, (req, res) => {
@@ -15,7 +17,7 @@ addRouter.get('/', authGuard, (req, res) => {
 	}
 });
 
-addRouter.post('/', authGuard, async (req, res) => {
+addRouter.post('/', authGuard, addTechValidators, async (req, res) => {
 	const { technologyName, duration, imageURL } = req.body;
 	// const stack = new Tech(technologyName, duration, imageURL); // NO DB
 	const stack = new Tech({
@@ -27,8 +29,25 @@ addRouter.post('/', authGuard, async (req, res) => {
 
 	try {
 		// await stack.saveAddedTech(); // NO DB
+
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			req.flash('addTechError', errors.array()[0].msg);
+			return res.status(422).render('addTechnology', {
+				title: 'Add page',
+				isAdd: true,
+				formData: {
+					technologyName: req.body.technologyName,
+					duration: req.body.duration,
+					imageURL: req.body.imageURL
+				},
+				addTechError: req.flash('addTechError')
+			});
+		} 
+
 		await stack.save(); // Mongo DB
-		res.redirect('/stack');
+		return res.redirect('/stack');
 	} catch(e) {
 		console.log('Add technology failed with error', e);
 	}

@@ -1,12 +1,15 @@
 const { Router } = require('express');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const sgMail = require('@sendgrid/mail');
+const { validationResult } = require('express-validator');
+
+const { FIFTEEN_MINUTES_IN_MILLISECONDS } = require('../configs/index');
 const registrationEmail = require('../emails/emailRegistrationSendler');
 const resetEmail = require('../emails/emailResetSendler');
-const { FIFTEEN_MINUTES_IN_MILLISECONDS } = require('../configs/index');
 const { SG_API_KEY } = require('../configs/secure_keys');
-const sgMail = require('@sendgrid/mail');
 const User = require('../models_mongoose/user');
+const { signinValidators, signupValidators } = require('../helpers/validators');
 
 const authRouter = Router();
 sgMail.setApiKey(SG_API_KEY);
@@ -47,8 +50,9 @@ authRouter.get('/login', async (req, res) => {
 });
 
 authRouter.get('/logout', async (req, res) => {
-	req.session.destroy(() => {});
-	res.redirect('/auth/login#login');
+	req.session.destroy(() => {
+		res.redirect('/auth/login#login');
+	});
 });
 
 authRouter.get('/resetPassword', (req, res) => {
@@ -125,9 +129,17 @@ authRouter.post('/resetPassword', (req, res) => {
 	}
 });
 
-authRouter.post('/signin', async (req, res) => {
+authRouter.post('/signin', signinValidators, async (req, res) => {
 	try {
 		const { email, password } = req.body;
+
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			req.flash('loginError', errors.array()[0].msg);
+			return res.status(422).redirect('/auth/login#login');
+		}
+
 		const candidate = await User.findOne({ email });
 		if (candidate) {
 			const areSame = await bcrypt.compare(password, candidate.password);
@@ -139,55 +151,51 @@ authRouter.post('/signin', async (req, res) => {
 					if (err) {
 						throw new Error(err);
 					}
-					res.redirect('/');
+					return res.redirect('/');
 				});
 			} else {
 				req.flash('loginError', 'Wrong password.');
-				res.redirect('/auth/login#login');
+				return res.redirect('/auth/login#login');
 			}
 		} else {
 			req.flash('loginError', "User with this email doesn't exist.");
-			res.redirect('/auth/login#login');
+			return res.redirect('/auth/login#login');
 		}
 	} catch (e) {
 		console.log('User sign in error: ', e);
 	}
 });
 
-authRouter.post('/signup', async (req, res) => {
+authRouter.post('/signup', signupValidators, async (req, res) => {
 	try {
-		const { email, password, repeat_password, userName } = req.body;
+		const { email, password, userName } = req.body;
 
-		const candidate = await User.findOne({ email });
+		const errors = validationResult(req);
 
-		if (password === repeat_password) {
-			if (candidate) {
-				req.flash('signupError', 'User with this email already exist.');
-				res.redirect('/auth/login#signup');
-			} else {
-				const hashPassword = await bcrypt.hash(password, 12);
-				const user = new User({
-					email,
-					password: hashPassword,
-					name: userName,
-					learningList: { stack: [] },
-				});
-				await user.save();
-				res.redirect('/auth/login#login');
-				sgMail
-					.send(registrationEmail(email, userName))
-					.then((response) => {
-						console.log(response[0].statusCode);
-						console.log(response[0].headers);
-					})
-					.catch((error) => {
-						console.error(error);
-					});
-			}
-		} else {
-			req.flash('signupError', "Passwords don't match");
-			res.redirect('/auth/login#signup');
+		if (!errors.isEmpty()) {
+			req.flash('signupError', errors.array()[0].msg);
+			return res.status(422).redirect('/auth/login#signup');
 		}
+
+		const hashPassword = await bcrypt.hash(password, 12);
+		const user = new User({
+			email,
+			password: hashPassword,
+			name: userName,
+			learningList: { stack: [] },
+		});
+		await user.save();
+		res.redirect('/auth/login#login');
+		sgMail
+			.send(registrationEmail(email, userName))
+			.then((response) => {
+				console.log(response[0].statusCode);
+				console.log(response[0].headers);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+		
 	} catch (error) {
 		console.log('User sign un error: ', error);
 	}

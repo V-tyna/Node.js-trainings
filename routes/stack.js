@@ -1,10 +1,13 @@
 const { Router } = require('express');
+const { validationResult } = require('express-validator');
+
+const { editTechValidators } = require('../helpers/validators');
 const authGuard = require('../middlewares/authGuard');
+const deepClone = require('../helpers/deepClone');
 const isOwner = require('../helpers/isOwner');
 // const Tech = require('../models/techModel'); // NO DB
 const Tech = require('../models_mongoose/tech');
 const stackRouter = Router();
-const deepClone = require('../helpers/deepClone');
 
 stackRouter.get('/', async (req, res) => {
 	// const stack = await Tech.getAll(); //NO DB
@@ -27,6 +30,7 @@ stackRouter.get('/:id/edit', authGuard, async (req, res) => {
 
 	try {
 		//const tech = await Tech.getById(req.params.id); //NO DB
+		
 		const tech = deepClone(await Tech.findById(req.params.id));
 
 		if (!isOwner(tech.user_id, req)) {
@@ -34,7 +38,8 @@ stackRouter.get('/:id/edit', authGuard, async (req, res) => {
 		} else {
 			res.render('editTechnology', {
 				title: `Edit ${tech.techName}`,
-				tech: tech
+				tech: tech,
+				editTechError: req.flash('editTechError')
 			});	
 		}
 		
@@ -43,10 +48,17 @@ stackRouter.get('/:id/edit', authGuard, async (req, res) => {
 	}
 });
 
-stackRouter.post('/edit', authGuard, async (req, res) => {
+stackRouter.post('/edit', authGuard, editTechValidators, async (req, res) => {
 	// await Tech.update(req.body); // NO DB
 	try {
-		const { id, user_id } = req.body;
+		const { id, user_id, techName, duration, image } = req.body;
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			req.flash('editTechError', errors.array()[0].msg);
+			return res.status(422).redirect(`/stack/${id}/edit?allow=true`);
+		} 
+
 		if (!isOwner(user_id, req)) {
 			return res.redirect('/stack');
 		} else {
