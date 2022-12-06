@@ -51,7 +51,7 @@ stackRouter.get('/:id/edit', authGuard, async (req, res) => {
 stackRouter.post('/edit', authGuard, editTechValidators, async (req, res) => {
 	// await Tech.update(req.body); // NO DB
 	try {
-		const { id, user_id, techName, duration, image } = req.body;
+		const { id, user_id } = req.body;
 		const errors = validationResult(req);
 
 		if (!errors.isEmpty()) {

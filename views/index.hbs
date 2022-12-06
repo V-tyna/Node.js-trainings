@@ -1,26 +1,92 @@
 <h1>Home page</h1>
 <div class='input-field col s12'>
 	<form method='post' action='/addMessage'>
-	<i class="material-icons prefix">textsms</i>
-		<label for="autocomplete-input">Your message:</label>
+		<i class='material-icons prefix'>textsms</i>
+		<label for='autocomplete-input'>Your message:</label>
 		<input name='message' type='text' />
-		<input type="hidden" name="_csrf" value="{{ csrf }}">
-		<button class="btn waves-effect waves-light" type="submit">Send
-    <i class="material-icons right">send</i>
-  </button>
+		<input type='hidden' name='_csrf' value='{{@root.csrf}}' />
+		<button class='btn waves-effect waves-light' type='submit'>Send
+			<i class='material-icons right'>send</i>
+		</button>
 	</form>
 </div>
-<div class="messages">
-{{#if messages.length}}
-{{#each messages}}
-<div class="message-container">
-	<h5>{{message}}</h5>
-	<small>{{date}}</small>
-</div>
-{{/each}}
-{{else}}
-<p>No messages...</p>
-{{/if}}
+{{#ifBothTrue currentMessage.message_id '&&' editMode }}
+	<form action='/{{currentMessage.message_id}}/edit' method='POST'>
+		<span
+			class='helper-text'
+			data-error='Enter message, it should be more than 2 characters.'
+			data-success='right'
+		></span>
+		<input
+			type='text'
+			name='message_content'
+			value='{{currentMessage.content}}'
+			class='validate'
+			required
+			minlength="2"
+		/>
+		<button
+			class='waves-effect waves-light btn-small'
+			style='background-color: #26a69a; height: 25px; line-height: 25px; font-size: 11px;'
+		>Update message</button>
+		<a
+			href="/"
+			class='waves-effect waves-light btn-small'
+			style='background-color: #E57373; height: 25px; line-height: 25px; font-size: 11px;'
+		>Cancel</a>
+		<input type="hidden" name="_csrf" value="{{ @root.csrf }}" />
+	</form>
+{{/ifBothTrue}}
+
+{{#ifBothTrue currentMessage.message_id '&&' deleteMode }}
+	<form action='/{{currentMessage.message_id}}/delete' method='POST'>
+		<p>Are you sure that you want delete message: </p>
+		<q style="color: #E57373; border: 1px solid #ccc; padding: 10px;">{{currentMessage.content}}</q>
+		<p>?</p>
+		<button
+			class='waves-effect waves-light btn-small'
+			style='background-color: #26a69a; height: 25px; line-height: 25px; font-size: 11px;'
+		>Delete message</button>
+		<a
+			href="/"
+			class='waves-effect waves-light btn-small'
+			style='background-color: #E57373; height: 25px; line-height: 25px; font-size: 11px;'
+		>Cancel</a>
+		<input type="hidden" name="_csrf" value="{{ @root.csrf }}" />
+	</form>
+{{/ifBothTrue}}
+
+<div class='messages'>
+	{{#if messages.length}}
+		{{#each messages}}
+			<div class='message-container'>
+				<h5>{{content}}</h5>
+				<small>
+					{{#ifEqual user_id @root.userId}}
+						<a
+							href='/{{message_id}}/edit'
+							class='waves-effect waves-light btn-small'
+							style='background-color: #2688a6; height: 20px; line-height: 20px; font-size: 10px;'
+						>Edit</a>
+						<a
+							href='/{{message_id}}/delete'
+							class='waves-effect waves-light btn-small'
+							style='background-color: #E57373; height: 20px; line-height: 20px; font-size: 10px;'
+						>Delete</a>
+					{{/ifEqual}}
+					{{date}}
+					<b style='color: #2688a6;'>{{user_name}}</b></small>
+				<input type='hidden' name='message_id' value='{{message_id}}' />
+				<input type='hidden' name='user_id' value='{{user_id}}' />
+			</div>
+		{{/each}}
+	{{else}}
+		<p>No messages...</p>
+	{{/if}}
 </div>
 
-<a class="waves-effect waves-light btn" href='/about'>About page</a>
+<a
+	class='waves-effect waves-light btn'
+	style='margin-top: 20px;'
+	href='/about'
+>About page</a>
