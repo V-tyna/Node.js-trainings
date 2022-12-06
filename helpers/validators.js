@@ -17,8 +17,7 @@ module.exports = {
 				} catch (e) {
 					console.log('Async signup email validation error: ', e);
 				}
-			})
-			.normalizeEmail(),
+			}),
 		body(
 			'password',
 			"Password can't be less that 6 symbols or more than 56."
@@ -42,7 +41,7 @@ module.exports = {
 	],
 
 	signinValidators: [
-		body('email', 'Email is not valid').isEmail().normalizeEmail(),
+		body('email', 'Email is not valid').isEmail(),
 		body(
 			'password',
 			"Password can't be less that 6 symbols or more than 56."
@@ -53,5 +52,5 @@ module.exports = {
 	],
 
 	addTechValidators: [body('imageURL', 'Enter valid url').isURL().trim()],
-  editTechValidators: [body('image', 'Enter valid URL').isURL().trim()]
+	editTechValidators: [body('image', 'Enter valid URL').isURL().trim()],
 };
