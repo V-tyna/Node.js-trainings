@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const authGuard = require('../middlewares/authGuard');
 const deepClone = require('../helpers/deepClone');
 const mapMessages = require('../helpers/mapMessages');
 // const MessagesService = require('../models/messagesModel'); // NO DB
@@ -10,8 +11,8 @@ homeRouter.get('/', async (req, res) => {
 		// const messages = await MessagesService.getMessages(); // NO DB
 		const allMessages = deepClone(await Message.find().populate('user'));
 		const messages = mapMessages(allMessages);
-
 		const currentMessageId = req.query.message_id;
+	
 		res.render('index', {
 			title: 'Home page',
 			currentMessage: req.query ? messages.find(m => m.message_id === currentMessageId) : null,
@@ -25,7 +26,7 @@ homeRouter.get('/', async (req, res) => {
 	}
 });
 
-homeRouter.post('/addMessage', async (req, res) => {
+homeRouter.post('/addMessage', authGuard, async (req, res) => {
 	try {
 		//const message = new MessagesService(req.body.message); // NO DB
 		//await message.addMessage(); // NO DB
@@ -41,7 +42,7 @@ homeRouter.post('/addMessage', async (req, res) => {
 	}
 });
 
-homeRouter.get('/:id/edit', (req, res) => {
+homeRouter.get('/:id/edit', authGuard, (req, res) => {
 	try {
 		return res.redirect(`/?message_id=${req.params.id}&edit=true`);
 	} catch(e) {
@@ -49,7 +50,7 @@ homeRouter.get('/:id/edit', (req, res) => {
 	}
 });
 
-homeRouter.get('/:id/delete', (req, res) => {
+homeRouter.get('/:id/delete', authGuard, (req, res) => {
 	try {
 		return res.redirect(`/?message_id=${req.params.id}&delete=true`);
 	} catch(e) {
@@ -57,7 +58,7 @@ homeRouter.get('/:id/delete', (req, res) => {
 	}
 });
 
-homeRouter.post('/:id/edit', async (req, res) => {
+homeRouter.post('/:id/edit', authGuard, async (req, res) => {
 	try {
 			const message = await Message.findById(req.params.id);
 			const updatedMessage = Object.assign(message, { content: req.body.message_content });
@@ -68,7 +69,7 @@ homeRouter.post('/:id/edit', async (req, res) => {
 	}
 });
 
-homeRouter.post('/:id/delete', async (req, res) => {
+homeRouter.post('/:id/delete', authGuard, async (req, res) => {
 	try {
 		await Message.findByIdAndDelete(req.params.id);
 		return res.redirect('/');

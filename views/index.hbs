@@ -5,12 +5,24 @@
 		<label for='autocomplete-input'>Your message:</label>
 		<input name='message' type='text' />
 		<input type='hidden' name='_csrf' value='{{@root.csrf}}' />
-		<button class='btn waves-effect waves-light' type='submit'>Send
-			<i class='material-icons right'>send</i>
-		</button>
+		{{#if @root.isAuth}}
+			<button
+				class='btn waves-effect waves-light'
+				type='submit'
+				style='margin-top: 10px;'
+			>Send
+				<i class='material-icons right'>send</i>
+			</button>
+		{{else}}
+			<a
+				href='/auth/login#login'
+				class='waves-effect waves-light btn-small'
+				style='margin-top: 10px;'
+			>Sign in to leave a message</a>
+		{{/if}}
 	</form>
 </div>
-{{#ifBothTrue currentMessage.message_id '&&' editMode }}
+{{#ifBothTrue currentMessage.message_id '&&' editMode}}
 	<form action='/{{currentMessage.message_id}}/edit' method='POST'>
 		<span
 			class='helper-text'
@@ -23,36 +35,38 @@
 			value='{{currentMessage.content}}'
 			class='validate'
 			required
-			minlength="2"
+			minlength='2'
 		/>
 		<button
 			class='waves-effect waves-light btn-small'
 			style='background-color: #26a69a; height: 25px; line-height: 25px; font-size: 11px;'
 		>Update message</button>
 		<a
-			href="/"
+			href='/'
 			class='waves-effect waves-light btn-small'
 			style='background-color: #E57373; height: 25px; line-height: 25px; font-size: 11px;'
 		>Cancel</a>
-		<input type="hidden" name="_csrf" value="{{ @root.csrf }}" />
+		<input type='hidden' name='_csrf' value='{{@root.csrf}}' />
 	</form>
 {{/ifBothTrue}}
 
-{{#ifBothTrue currentMessage.message_id '&&' deleteMode }}
+{{#ifBothTrue currentMessage.message_id '&&' deleteMode}}
 	<form action='/{{currentMessage.message_id}}/delete' method='POST'>
 		<p>Are you sure that you want delete message: </p>
-		<q style="color: #E57373; border: 1px solid #ccc; padding: 10px;">{{currentMessage.content}}</q>
+		<q
+			style='color: #E57373; border: 1px solid #ccc; padding: 10px;'
+		>{{currentMessage.content}}</q>
 		<p>?</p>
 		<button
 			class='waves-effect waves-light btn-small'
 			style='background-color: #26a69a; height: 25px; line-height: 25px; font-size: 11px;'
 		>Delete message</button>
 		<a
-			href="/"
+			href='/'
 			class='waves-effect waves-light btn-small'
 			style='background-color: #E57373; height: 25px; line-height: 25px; font-size: 11px;'
 		>Cancel</a>
-		<input type="hidden" name="_csrf" value="{{ @root.csrf }}" />
+		<input type='hidden' name='_csrf' value='{{@root.csrf}}' />
 	</form>
 {{/ifBothTrue}}
 
