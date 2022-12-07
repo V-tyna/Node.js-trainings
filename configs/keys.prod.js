@@ -1,0 +1,9 @@
+module.exports = {
+  BASE_URL: process.env.BASE_URL,
+  DEFAULT_PORT: process.env.DEFAULT_PORT,
+  EMAIL_SEND_FROM: process.env.EMAIL_SEND_FROM,
+	FIFTEEN_MINUTES_IN_MILLISECONDS: 900000,
+  MONGO_URL: process.env.MONGO_URL,
+  SESSION_SECRET: process.env.SESSION_SECRET,
+  SG_API_KEY: process.env.SG_API_KEY,
+} 

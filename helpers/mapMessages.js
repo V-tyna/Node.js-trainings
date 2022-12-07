@@ -7,5 +7,5 @@ module.exports = function(messages) {
       user_id: message.user._id,
       content: message.content
     }
-  })
+  }).reverse();
 }

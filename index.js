@@ -1,6 +1,8 @@
 const express = require('express');
+const compression = require('compression');
 const csurf = require('csurf');
 const flash = require('connect-flash');
+const helmet = require('helmet');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -17,7 +19,6 @@ const keys = require('./configs/index');
 const learningRouter = require('./routes/learningList');
 const makeUserSchema = require('./middlewares/makeUserSchema');
 const profileRouter = require('./routes/profile');
-const { SESSION_SECRET } = require('./configs/secure_keys');
 const stackRouters = require('./routes/stack');
 // const User = require('./models_mongoose/user'); // WITHOUT SESSIONS and AUTH
 const varMiddleware = require('./middlewares/variables');
@@ -29,12 +30,12 @@ const app = express();
 const handlebars = expressHandlebars.create({
 	defaultLayout: 'main',
 	extname: '.hbs',
-	helpers: require('./helpers/hbs-helpers')
+	helpers: require('./helpers/hbs-helpers'),
 });
 
 const store = new MongoStore({
 	collection: 'sessions',
-	uri: keys.MONGO_URL
+	uri: keys.MONGO_URL,
 });
 
 app.engine('.hbs', handlebars.engine);
@@ -46,17 +47,36 @@ app.use('/avatars', express.static(path.join(__dirname, 'avatars')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(session({
-	secret: SESSION_SECRET,
-	resave: false,
-	saveUninitialized: false,
-	store
-}));
+app.use(
+	session({
+		secret: keys.SESSION_SECRET,
+		resave: false,
+		saveUninitialized: false,
+		store,
+	})
+);
 
 app.use(fileUploader.single('avatar'));
 
+app.use(compression());
 app.use(csurf());
 app.use(flash());
+app.use(
+	helmet({
+		contentSecurityPolicy: {
+			directives: {
+				...helmet.contentSecurityPolicy.getDefaultDirectives(),
+				'img-src': ["'self'", 'https:'],
+				'script-src-elem': [
+					"'self'",
+					'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js',
+					"'unsafe-inline'",
+				],
+			},
+		},
+		crossOriginEmbedderPolicy: false,
+	})
+);
 
 app.use(makeUserSchema);
 app.use(varMiddleware);
@@ -77,15 +97,14 @@ app.get('/api/users', (req, res) => {
 
 async function start() {
 	try {
-		await mongoose.connect(keys.MONGO_URL, {useNewUrlParser: true});
+		await mongoose.connect(keys.MONGO_URL, { useNewUrlParser: true });
 
 		app.listen(PORT, () => {
 			console.log(`Server is running on port: ${PORT}`);
-	});
-	} catch(error) {
+		});
+	} catch (error) {
 		console.log('Server connection error: ', error);
 	}
-	
 }
 
 start();

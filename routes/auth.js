@@ -4,10 +4,9 @@ const crypto = require('crypto');
 const sgMail = require('@sendgrid/mail');
 const { validationResult } = require('express-validator');
 
-const { FIFTEEN_MINUTES_IN_MILLISECONDS } = require('../configs/index');
+const { FIFTEEN_MINUTES_IN_MILLISECONDS, SG_API_KEY  } = require('../configs/index');
 const registrationEmail = require('../emails/emailRegistrationSendler');
 const resetEmail = require('../emails/emailResetSendler');
-const { SG_API_KEY } = require('../configs/secure_keys');
 const User = require('../models_mongoose/user');
 const { signinValidators, signupValidators } = require('../helpers/validators');
 
